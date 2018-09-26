@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour {
 
     public GameObject ballPrefab;
     public GameObject aiControl;
+    public GameObject controllerControl;
+
     public Text score1Text;
     public Text score2Text;
     public Text gameOver;
@@ -26,13 +28,13 @@ public class GameController : MonoBehaviour {
     private bool inputActive = false;
     private bool aiOn = false;
     private bool cmdOn = false;
+    private bool controllerOn = false;
 
     // Use this for initialization
     void Start () {
         SpawnBall ();
 
         InputField input = command.GetComponent<InputField>();
-        input.onEndEdit.AddListener(Submit);
     }
 
     // Update is called once per frame
@@ -45,6 +47,7 @@ public class GameController : MonoBehaviour {
 
         PlayAgain();
         AIToggle();
+        ControllerToggle();
     }
 
     void SpawnBall () {
@@ -78,12 +81,67 @@ public class GameController : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.Return) && inputActive) {
             command.text = "";
         }
+
+        if (cmdOn) {
+            if (Input.GetKeyDown(KeyCode.A)) { command.text += "a"; }
+            else if (Input.GetKeyDown(KeyCode.B)) { command.text += "b"; }
+            else if (Input.GetKeyDown(KeyCode.C)) { command.text += "c"; }
+            else if (Input.GetKeyDown(KeyCode.D)) { command.text += "d"; }
+            else if (Input.GetKeyDown(KeyCode.E)) { command.text += "e"; }
+            else if (Input.GetKeyDown(KeyCode.F)) { command.text += "f"; }
+            else if (Input.GetKeyDown(KeyCode.G)) { command.text += "g"; }
+            else if (Input.GetKeyDown(KeyCode.H)) { command.text += "h"; }
+            else if (Input.GetKeyDown(KeyCode.I)) { command.text += "i"; }
+            else if (Input.GetKeyDown(KeyCode.J)) { command.text += "j"; }
+            else if (Input.GetKeyDown(KeyCode.K)) { command.text += "k"; }
+            else if (Input.GetKeyDown(KeyCode.L)) { command.text += "l"; }
+            else if (Input.GetKeyDown(KeyCode.M)) { command.text += "m"; }
+            else if (Input.GetKeyDown(KeyCode.N)) { command.text += "n"; }
+            else if (Input.GetKeyDown(KeyCode.O)) { command.text += "o"; }
+            else if (Input.GetKeyDown(KeyCode.P)) { command.text += "p"; }
+            else if (Input.GetKeyDown(KeyCode.Q)) { command.text += "q"; }
+            else if (Input.GetKeyDown(KeyCode.R)) { command.text += "r"; }
+            else if (Input.GetKeyDown(KeyCode.S)) { command.text += "s"; }
+            else if (Input.GetKeyDown(KeyCode.T)) { command.text += "t"; }
+            else if (Input.GetKeyDown(KeyCode.U)) { command.text += "u"; }
+            else if (Input.GetKeyDown(KeyCode.V)) { command.text += "v"; }
+            else if (Input.GetKeyDown(KeyCode.W)) { command.text += "w"; }
+            else if (Input.GetKeyDown(KeyCode.X)) { command.text += "x"; }
+            else if (Input.GetKeyDown(KeyCode.Y)) { command.text += "y"; }
+            else if (Input.GetKeyDown(KeyCode.Z)) { command.text += "z"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha0)) { command.text += "0"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha1)) { command.text += "1"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) { command.text += "2"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) { command.text += "3"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha4)) { command.text += "4"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha5)) { command.text += "5"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha6)) { command.text += "6"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha7)) { command.text += "7"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha8)) { command.text += "8"; }
+            else if (Input.GetKeyDown(KeyCode.Alpha9)) { command.text += "9"; }
+            else if (Input.GetKeyDown(KeyCode.Space)) { command.text += " "; }
+            else if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                if (command.text.Length > 0)
+                {
+                    command.text = command.text.Substring(0, command.text.Length - 1);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                    Submit(command.text);
+            }
+        }
     }
 
     void Submit(string cmd)
     {
         if (cmd == "ai") {
             aiOn = !aiOn;
+        }
+
+        if (cmd == "controller") {
+            controllerOn = !controllerOn;
         }
 
         if (cmd == "colour") {
@@ -147,11 +205,18 @@ public class GameController : MonoBehaviour {
     void AIToggle () {
         if (aiOn) {
             aiControl.GetComponent<AI>().playerIndex = 3;
-            aiControl.GetComponent<AI>().speed = 7;
         } else {
             aiControl.GetComponent<AI>().playerIndex = 2;
-            aiControl.GetComponent<AI>().speed = 7;
         }
     }
-    
+
+
+    void ControllerToggle()
+    {
+        if (controllerOn) {
+            controllerControl.GetComponent<Paddle>().playerIndex = 4;
+        } else {
+            controllerControl.GetComponent<Paddle>().playerIndex = 1;
+        }
+    }
 }

@@ -17,7 +17,7 @@ public class AI : MonoBehaviour {
     void Update() {
 
         if (playerIndex == 2) {
-            float verticalMovement = Input.GetAxis("Vertical" + playerIndex);
+            float verticalMovement = Input.GetAxis ("Vertical" + playerIndex);
 
             GetComponent<Rigidbody>().velocity = new Vector3(
                 0f,
