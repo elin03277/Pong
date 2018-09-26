@@ -5,39 +5,37 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject ballPrefab;
-    public GameObject aiControl;
-    public GameObject controllerControl;
+    public GameObject ballPrefab;          // Used to access the ball prefab
+    public GameObject aiControl;           // Used to access the AI script
+    public GameObject controllerControl;   // Used to access the paddle script
+ 
+    public Text score1Text;                // Player 1's score
+    public Text score2Text;                // Player 2's score
+    public Text gameOver;                  // Displays text to say when the game is over
+    public Text playAgain;                 // Displays text to ask the users to if they want to play again
+    public InputField command;             // Used to modify and process the inputfield 
+    public float scoreCoordinates = 3.4f;  // Used to set where the score is
+    public int winningScore = 3;           // Used to decide what the winning score is
+    public Canvas console;                 // Used to turn command prompt on and off
 
-    public Text score1Text;
-    public Text score2Text;
-    public Text gameOver;
-    public Text playAgain;
-    public InputField command;
-    public float scoreCoordinates = 3.4f;
-    public int winningScore = 3;
-    public Canvas console;
+    private Color colour1 = new Color32(130, 215, 210, 255);  // Default colour
+    private Color colour2 = Color.blue;                       // Blue colour
 
-    private Color colour1 = new Color32(130, 215, 210, 255);
-    private Color colour2 = Color.blue;
+    private Ball currentBall;              // Used to keep track of the current ball
+    private int score1 = 0;                // Score for player 1
+    private int score2 = 0;                // Score for player 2
+    private bool over = false;             // Used too keep track if the game is over
+    private bool inputActive = false;      // Used to keep track if the inputfield is on
+    private bool aiOn = false;             // Used to keep track if the AI is on
+    private bool cmdOn = false;            // Used to keep track if the command prompt is on
+    private bool controllerOn = false;     // Used to keep track if the controller is used
 
-    private Ball currentBall;
-    private int score1 = 0;
-    private int score2 = 0;
-    private bool over = false;
-    private bool inputActive = false;
-    private bool aiOn = false;
-    private bool cmdOn = false;
-    private bool controllerOn = false;
-
-    // Use this for initialization
+    // Creates the initial ball
     void Start () {
         SpawnBall ();
-
-        InputField input = command.GetComponent<InputField>();
     }
 
-    // Update is called once per frame
+    // Keeps all operations on
     void Update () {
         ActiveCommandPrompt ();
 
@@ -50,6 +48,7 @@ public class GameController : MonoBehaviour {
         ControllerToggle();
     }
 
+    // Creates Ball
     void SpawnBall () {
         GameObject ballInstance = Instantiate(ballPrefab, transform);
 
@@ -60,6 +59,7 @@ public class GameController : MonoBehaviour {
         score2Text.text = "P2:" + score2.ToString();
     }
 
+    // Checks to see if a player has won
     void CheckScore () {
         if (score1 >= winningScore || score2 >= winningScore) {
             gameOver.enabled = true;
@@ -68,6 +68,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    // Turns command prompt on and off along with handling typing without focusing the inputfield
     void ActiveCommandPrompt () {
         if (Input.GetKeyUp (KeyCode.C) && !cmdOn) {
             Time.timeScale = 0;
@@ -77,10 +78,6 @@ public class GameController : MonoBehaviour {
                 cmdOn = true;
             }
         } 
-
-        if (Input.GetKeyUp(KeyCode.Return) && inputActive) {
-            command.text = "";
-        }
 
         if (cmdOn) {
             if (Input.GetKeyDown(KeyCode.A)) { command.text += "a"; }
@@ -120,20 +117,21 @@ public class GameController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Alpha8)) { command.text += "8"; }
             else if (Input.GetKeyDown(KeyCode.Alpha9)) { command.text += "9"; }
             else if (Input.GetKeyDown(KeyCode.Space)) { command.text += " "; }
-            else if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                if (command.text.Length > 0)
-                {
+            else if (Input.GetKeyDown(KeyCode.Backspace)) {
+                if (command.text.Length > 0) {
                     command.text = command.text.Substring(0, command.text.Length - 1);
                 }
             }
+
             else if (Input.GetKeyDown(KeyCode.Return))
             {
-                    Submit(command.text);
+                Submit(command.text);
+                command.text = "";
             }
         }
     }
 
+    // Changes a setting based on the command received from the command prompt
     void Submit(string cmd)
     {
         if (cmd == "ai") {
@@ -157,7 +155,7 @@ public class GameController : MonoBehaviour {
             score2Text.text = "P2:0";
         }
 
-        if (cmd == "quit") {
+        if (cmd == "exit") {
             console.enabled = false;
             inputActive = false;
             cmdOn = false;
@@ -166,6 +164,7 @@ public class GameController : MonoBehaviour {
 
     }
 
+    // Destroys a ball after each round and creates a ball if the game isn't over
     void Rounds () {
         if (!over) {
 
@@ -189,6 +188,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    // Allows the users to restart the game
     void PlayAgain () {
         if (score1 >= winningScore || score2 >= winningScore) {
             if (Input.GetKeyUp (KeyCode.Space)) {
@@ -202,6 +202,7 @@ public class GameController : MonoBehaviour {
         }
     }   
 
+    // Switches the AI on and off for player 2
     void AIToggle () {
         if (aiOn) {
             aiControl.GetComponent<AI>().playerIndex = 3;
@@ -210,9 +211,8 @@ public class GameController : MonoBehaviour {
         }
     }
 
-
-    void ControllerToggle()
-    {
+    // Switches between the controller and keyboard for player 1
+    void ControllerToggle() {
         if (controllerOn) {
             controllerControl.GetComponent<Paddle>().playerIndex = 4;
         } else {
