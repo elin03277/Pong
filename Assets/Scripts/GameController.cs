@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour {
     public InputField command;
     public float scoreCoordinates = 3.4f;
     public int winningScore = 3;
+    public Canvas console;
 
     private Color colour1 = new Color32(130, 215, 210, 255);
     private Color colour2 = Color.blue;
@@ -68,23 +69,14 @@ public class GameController : MonoBehaviour {
         if (Input.GetKeyUp (KeyCode.C) && !cmdOn) {
             Time.timeScale = 0;
             if (inputActive == false) {
-                command.enabled = true;
-                command.text = "Cmd: \"ai, reset, colour\" Space to Exit";
+                console.enabled = true;
                 inputActive = true;
                 cmdOn = true;
             }
-        } else if (Input.GetKeyUp (KeyCode.Space) && cmdOn) {
-            command.enabled = false;
-            command.text = "";
-            inputActive = false;
-            cmdOn = false;
-            Time.timeScale = 1;
-        }
+        } 
 
-        if (cmdOn) {
-            if (Input.GetKeyUp (KeyCode.Return)) {
-                command.text = "Cmd: \"ai, reset, colour\" Space to Exit";
-            }
+        if (Input.GetKeyUp(KeyCode.Return) && inputActive) {
+            command.text = "";
         }
     }
 
@@ -105,6 +97,13 @@ public class GameController : MonoBehaviour {
         if (cmd == "reset") {
             score1Text.text = "P1:0";
             score2Text.text = "P2:0";
+        }
+
+        if (cmd == "quit") {
+            console.enabled = false;
+            inputActive = false;
+            cmdOn = false;
+            Time.timeScale = 1;
         }
 
     }
