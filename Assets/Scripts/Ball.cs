@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour {
 
     public float minYSpeed = 0.8f;
     public float maxYSpeed = 1.2f;
-
+    
     private Rigidbody ballRigidbody;
 
 	// Use this for initialization
@@ -21,7 +21,7 @@ public class Ball : MonoBehaviour {
             Random.Range(minXSpeed, maxXSpeed) * Random.value > 0.5f ? -1 : 1, 
             Random.Range(minYSpeed, maxYSpeed) * Random.value > 0.5f ? -1 : 1, 
             0f);
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -58,6 +58,7 @@ public class Ball : MonoBehaviour {
                     ballRigidbody.velocity.y * difficultyMultiplier, 
                     0f
                 );
+                
             }
 
             //Collected with right paddle
@@ -67,6 +68,7 @@ public class Ball : MonoBehaviour {
                     ballRigidbody.velocity.y * difficultyMultiplier, 
                     0f
                 );
+                
             }
         }
     }

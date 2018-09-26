@@ -44,7 +44,6 @@ public class GameController : MonoBehaviour {
 
         PlayAgain();
         AIToggle();
-
     }
 
     void SpawnBall () {
@@ -70,7 +69,7 @@ public class GameController : MonoBehaviour {
             Time.timeScale = 0;
             if (inputActive == false) {
                 command.enabled = true;
-                command.text = "Cmd: \"ai, colour\" Space to Enter";
+                command.text = "Cmd: \"ai, reset, colour\" Space to Exit";
                 inputActive = true;
                 cmdOn = true;
             }
@@ -84,7 +83,7 @@ public class GameController : MonoBehaviour {
 
         if (cmdOn) {
             if (Input.GetKeyUp (KeyCode.Return)) {
-                command.text = "Cmd: \"ai, colour\" Space to Enter";
+                command.text = "Cmd: \"ai, reset, colour\" Space to Exit";
             }
         }
     }
@@ -102,6 +101,12 @@ public class GameController : MonoBehaviour {
                 Camera.main.backgroundColor = colour2;
             }
         }
+
+        if (cmd == "reset") {
+            score1Text.text = "P1:0";
+            score2Text.text = "P2:0";
+        }
+
     }
 
     void Rounds () {
@@ -143,7 +148,7 @@ public class GameController : MonoBehaviour {
     void AIToggle () {
         if (aiOn) {
             aiControl.GetComponent<AI>().playerIndex = 3;
-            aiControl.GetComponent<AI>().speed = 5;
+            aiControl.GetComponent<AI>().speed = 7;
         } else {
             aiControl.GetComponent<AI>().playerIndex = 2;
             aiControl.GetComponent<AI>().speed = 7;

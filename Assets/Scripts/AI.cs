@@ -28,7 +28,7 @@ public class AI : MonoBehaviour {
             ball = GameObject.FindGameObjectWithTag("Ball");
 
             if (ball != null) {
-                if (ball.transform.position.y < 1.275 && ball.transform.position.y > -1.275) {
+                if (ball.transform.position.y < 1.475 && ball.transform.position.y > -1.475) {
                     Vector3 paddlePosition = transform.position;
                     paddlePosition.y = Mathf.Lerp(transform.position.y, ball.transform.position.y, speed * Time.deltaTime);
                     transform.position = paddlePosition;
